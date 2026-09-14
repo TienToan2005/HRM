@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hrm-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: db_hrm
+      POSTGRES_USER: hrm
+      POSTGRES_PASSWORD: hrm123
+    ports:
+      - "5432:5432"
+    volumes:
+      - hrm_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hrm -d db_hrm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  hrm_postgres_data:
