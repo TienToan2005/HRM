@@ -7,14 +7,14 @@ services:
     restart: always
     environment:
       POSTGRES_DB: db_hrm
-      POSTGRES_USER: hrm
-      POSTGRES_PASSWORD: hrm123
+      POSTGRES_USER: ${DB_USERNAME:?set DB_USERNAME in .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
     ports:
       - "5432:5432"
     volumes:
       - hrm_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hrm -d db_hrm"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d db_hrm"]
       interval: 5s
       timeout: 5s
       retries: 5
